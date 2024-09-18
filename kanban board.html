@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fef7ef;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      background-color: #ffedd5;
+    }
+
+    h1 {
+      font-size: 2em;
+      margin: 0;
+    }
+
+    .logout-btn {
+      padding: 10px 20px;
+      background-color: #ff7355;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .kanban-board {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .kanban-column {
+      background-color: #fff7e6;
+      border: 2px solid #e8b9a8;
+      border-radius: 8px;
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+
+    .kanban-column h2 {
+      text-align: center;
+      font-size: 1.5em;
+      margin-bottom: 20px;
+      background-color: white;
+      border: 2px solid black;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .kanban-card {
+      background-color: #f4d6cc;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      text-align: center;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #ffedd5;
+      font-size: 1em;
+    }
+
+  </style>
+  <title>Kanban Board</title>
+</head>
+<body>
+
+  <header>
+    <h1>Kanban Board</h1>
+    <button class="logout-btn">Log Out</button>
+  </header>
+
+  <div class="kanban-board">
+    <div class="kanban-column">
+      <h2>Start</h2>
+      <div class="kanban-card">Option list you project number 1</div>
+    </div>
+    <div class="kanban-column">
+      <h2>Research</h2>
+      <div class="kanban-card">Research list you project number 1</div>
+      <div class="kanban-card">Research list you project number 2</div>
+    </div>
+    <div class="kanban-column">
+      <h2>Analysis</h2>
+      <div class="kanban-card">Analysis list you project number 1</div>
+    </div>
+    <div class="kanban-column">
+      <h2>Final</h2>
+      <div class="kanban-card">Final list you project number 1</div>
+      <div class="kanban-card">Final list you project number 2</div>
+      <div class="kanban-card">Final list you project number 3</div>
+    </div>
+    <div class="kanban-column">
+      <h2>Done</h2>
+      <div class="kanban-card">Task completed 1</div>
+      <div class="kanban-card">Task completed 2</div>
+    </div>
+  </div>
+
+  <footer>
+    Made by Uliana with AI assistance
+  </footer>
+
+</body>
+</html>
