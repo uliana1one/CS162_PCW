@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fef7ef;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      background-color: #ffedd5;
+    }
+
+    h1 {
+      font-size: 2em;
+      margin: 0;
+    }
+
+    .kanban-board {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .kanban-column {
+      background-color: #fff7e6;
+      border: 2px solid #e8b9a8;
+      border-radius: 8px;
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      min-height: 400px;
+    }
+
+    .kanban-column h2 {
+      text-align: center;
+      font-size: 1.5em;
+      margin-bottom: 20px;
+      background-color: white;
+      border: 2px solid black;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .kanban-card {
+      background-color: #f4d6cc;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      text-align: center;
+      cursor: move;
+    }
+
+    .logout-btn {
+      padding: 10px 20px;
+      background-color: #ff7355;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+      font-size: 1em;
+      transition: background-color 0.3s ease;
+    }
+
+    .logout-btn:hover {
+      background-color: #ff4a33;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #ffedd5;
+      font-size: 1em;
+    }
+
+  </style>
+  <title>Kanban Board</title>
+</head>
+<body>
+
+  <header>
+    <h1>Kanban Board</h1>
+    <a href="kanban_form.html"><button class="logout-btn">Add Task</button></a>
+  </header>
+
+  <div class="kanban-board">
+    <div class="kanban-column" data-column="start">
+      <h2>Start</h2>
+    </div>
+    <div class="kanban-column" data-column="research">
+      <h2>Research</h2>
+    </div>
+    <div class="kanban-column" data-column="analysis">
+      <h2>Analysis</h2>
+    </div>
+    <div class="kanban-column" data-column="final">
+      <h2>Final</h2>
+    </div>
+    <div class="kanban-column" data-column="done">
+      <h2>Done</h2>
+    </div>
+  </div>
+
+
+  <script>
+    // Function to find the column by its heading text
+    function findColumnByHeadingText(text) {
+      const headers = document.querySelectorAll('.kanban-column h2');
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i].textContent.trim() === text) {
+          return headers[i].parentNode;
+        }
+      }
+      return null;
+    }
+
+    // Object to map each column name to its corresponding DOM element
+    const columns = {
+      start: findColumnByHeadingText("Start"),
+      research: findColumnByHeadingText("Research"),
+      analysis: findColumnByHeadingText("Analysis"),
+      final: findColumnByHeadingText("Final"),
+      done: findColumnByHeadingText("Done")
+    };
+
+    // Function to create a new task card with a delete button
+    function createTaskCard(taskDescription, column) {
+      const newTaskCard = document.createElement('div');
+      newTaskCard.classList.add('kanban-card');
+      newTaskCard.textContent = taskDescription;
+      newTaskCard.setAttribute('draggable', 'true'); // Enable dragging
+
+      // Create the delete button
+      const deleteButton = document.createElement('button');
+      deleteButton.textContent = 'Delete';
+      deleteButton.style.marginLeft = '20px';
+      deleteButton.style.backgroundColor = '#ff4a33';
+      deleteButton.style.color = '#fff';
+      deleteButton.style.border = 'none';
+      deleteButton.style.padding = '5px 10px';
+      deleteButton.style.cursor = 'pointer';
+      deleteButton.style.borderRadius = '5px';
+
+      // Append the delete button to the task card
+      newTaskCard.appendChild(deleteButton);
+
+      // Add click event listener to the delete button
+      deleteButton.addEventListener('click', function () {
+        newTaskCard.remove();
+        let tasks = JSON.parse(localStorage.getItem('kanbanTasks')) || {};
+        tasks[column] = tasks[column].filter(task => task !== taskDescription);
+        localStorage.setItem('kanbanTasks', JSON.stringify(tasks));
+      });
+
+      // Add drag-and-drop functionality
+      newTaskCard.addEventListener('dragstart', handleDragStart);
+      return newTaskCard;
+    }
+
+    // When the page loads, fetch tasks from localStorage and display them in the correct columns
+    document.addEventListener('DOMContentLoaded', function () {
+      const tasks = JSON.parse(localStorage.getItem('kanbanTasks')) || {};
+      for (const column in tasks) {
+        if (tasks[column] && columns[column]) {
+          tasks[column].forEach(taskDescription => {
+            const newTaskCard = createTaskCard(taskDescription, column);
+            columns[column].appendChild(newTaskCard);
+          });
+        }
+      }
+
+      // Add drag-and-drop functionality
+      const kanbanColumns = document.querySelectorAll('.kanban-column');
+      kanbanColumns.forEach(column => {
+        column.addEventListener('dragover', handleDragOver);
+        column.addEventListener('drop', handleDrop);
+      });
+    });
+
+    function handleDragStart(event) {
+      event.dataTransfer.setData('text/plain', event.target.textContent);
+      event.dataTransfer.setData('column', event.target.parentNode.getAttribute('data-column'));
+    }
+
+    function handleDragOver(event) {
+      event.preventDefault();
+    }
+
+    function handleDrop(event) {
+  event.preventDefault();
+  
+  const taskDescription = event.dataTransfer.getData('text/plain').replace('Delete', '').trim();
+  const oldColumn = event.dataTransfer.getData('column');
+  const newColumn = event.currentTarget.getAttribute('data-column');
+
+  if (oldColumn !== newColumn) {
+    const oldColumnTasks = JSON.parse(localStorage.getItem('kanbanTasks')) || {};
+    const oldTasks = oldColumnTasks[oldColumn].filter(task => task !== taskDescription);
+
+    // If the new column doesn't exist in tasks, create it
+    if (!oldColumnTasks[newColumn]) {
+      oldColumnTasks[newColumn] = [];
+    }
+
+    // Add task to the new column's array
+    oldColumnTasks[newColumn].push(taskDescription);
+
+    // Remove task from the old column's array
+    oldColumnTasks[oldColumn] = oldTasks;
+
+    // Save the updated tasks back to localStorage
+    localStorage.setItem('kanbanTasks', JSON.stringify(oldColumnTasks));
+
+    // Remove the task visually from the old column
+    const oldColumnElement = columns[oldColumn];
+    const cards = oldColumnElement.querySelectorAll('.kanban-card');
+    cards.forEach(card => {
+      if (card.textContent.includes(taskDescription)) {
+        card.remove();
+      }
+    });
+
+    // Add the task visually to the new column
+    const newTaskCard = createTaskCard(taskDescription, newColumn);
+    event.currentTarget.appendChild(newTaskCard);
+  }
+}
+  </script>
+
+  <footer>
+    Made by Uliana with AI assistance
+  </footer>
+
+</body>
+</html>
