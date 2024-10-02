@@ -1,0 +1,156 @@
+/* General page styling */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #fef7ef; /* Light background color */
+  margin: 0;
+  padding: 0;
+  height: 100%; /* Make sure it covers the entire viewport */
+}
+
+/* Header styling */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #ffedd5;
+}
+
+h1 {
+  font-size: 2em;
+  margin: 0;
+}
+
+/* Button styling for "Add Task" button */
+.logout-btn {
+  padding: 10px 20px;
+  background-color: #ff7355;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  font-size: 1em;
+  transition: background-color 0.3s ease;
+}
+
+.logout-btn:hover {
+  background-color: #ff4a33;
+}
+
+/* Kanban board styling */
+.kanban-board {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* Five equal columns */
+  gap: 20px; /* Space between columns */
+  padding: 20px;
+}
+
+/* Kanban column styling */
+.kanban-column {
+  background-color: #fff7e6;
+  border: 2px solid #e8b9a8;
+  border-radius: 8px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  min-height: 400px; /* Ensure that columns are at least 400px tall */
+}
+
+/* Kanban column title styling */
+.kanban-column h2 {
+  text-align: center;
+  font-size: 1.5em;
+  margin-bottom: 20px;
+  background-color: white;
+  border: 2px solid black;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Task card (KanbanCard) styling */
+.kanban-card {
+  background-color: #f4d6cc;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  text-align: center;
+  cursor: move; /* Show that the card is draggable */
+}
+
+/* Form container for adding a new task */
+.form-container {
+  background-color: #fff7e6;
+  border: 2px solid #e8b9a8;
+  border-radius: 8px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 20px auto;
+  width: 50%;
+  min-height: calc(100vh - 300px); /* Stretches almost to the bottom */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Form title */
+.form-container h2 {
+  text-align: center;
+  font-size: 1.5em;
+  margin-bottom: 20px;
+  background-color: white;
+  border: 2px solid black;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Form input fields (text and select dropdown) */
+.form-container input[type="text"],
+.form-container select {
+  margin-top: 15px;
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 30px;
+  border: 2px solid #e8b9a8;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+/* Submit button styling */
+.form-container input[type="submit"] {
+  background-color: #ff7355;
+  color: white;
+  padding: 15px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  width: 100%;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.form-container input[type="submit"]:hover {
+  background-color: #ff4a33;
+}
+
+/* Footer styling (optional if used in the project) */
+footer {
+  text-align: center;
+  padding: 20px;
+  background-color: #ffedd5;
+  font-size: 1em;
+}
+.kanban-card button {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.kanban-card button:hover {
+  background-color: darkred;
+}
