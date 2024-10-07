@@ -6,22 +6,39 @@ function KanbanBoard() {
   const [tasks, setTasks] = useState({});
 
   useEffect(() => {
-    let storedTasks = JSON.parse(localStorage.getItem('kanbanTasks')) || {};
+    // Fetch tasks from Flask API
+    fetch('http://127.0.0.1:5000/api/tasks')
+      .then((response) => response.json())
+      .then((data) => {
+        // Initialize columns if they don't exist
+        const fetchedTasks = data || {};
+        if (!fetchedTasks.start) fetchedTasks.start = [];
+        if (!fetchedTasks.research) fetchedTasks.research = [];
+        if (!fetchedTasks.analysis) fetchedTasks.analysis = [];
+        if (!fetchedTasks.final) fetchedTasks.final = [];
+        if (!fetchedTasks.done) fetchedTasks.done = [];
 
-    // Initialize columns if they don't exist
-    if (!storedTasks.start) storedTasks.start = [];
-    if (!storedTasks.research) storedTasks.research = [];
-    if (!storedTasks.analysis) storedTasks.analysis = [];
-    if (!storedTasks.final) storedTasks.final = [];
-    if (!storedTasks.done) storedTasks.done = [];
-
-    setTasks(storedTasks);
-    localStorage.setItem('kanbanTasks', JSON.stringify(storedTasks)); // Ensure storage is updated
+        setTasks(fetchedTasks);  // Set tasks to state
+      })
+      .catch((error) => console.error('Error fetching tasks:', error));
   }, []);
 
   const updateTasks = (newTasks) => {
     setTasks(newTasks);  // Update state
-    localStorage.setItem('kanbanTasks', JSON.stringify(newTasks));  // Update localStorage
+
+    // Send updated tasks to Flask backend
+    fetch('http://127.0.0.1:5000/api/tasks', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newTasks),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log('Tasks updated:', data);
+    })
+    .catch((error) => console.error('Error updating tasks:', error));
   };
 
   return (

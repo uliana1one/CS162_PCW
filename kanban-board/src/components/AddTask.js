@@ -6,12 +6,35 @@ function AddTask() {
   const [selectedColumn, setSelectedColumn] = useState('start');
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  // Modify handleSubmit to send data to Flask backend
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const tasks = JSON.parse(localStorage.getItem('kanbanTasks')) || {};
-    if (!tasks[selectedColumn]) tasks[selectedColumn] = [];
-    tasks[selectedColumn].push(taskDescription);
-    localStorage.setItem('kanbanTasks', JSON.stringify(tasks));
+
+    // Fetch the current tasks from the backend (instead of localStorage)
+    try {
+      const response = await fetch('http://127.0.0.1:5000/api/tasks');
+      const tasks = await response.json();  // Assuming tasks are returned in JSON format
+
+      // Ensure the column exists in the tasks object
+      if (!tasks[selectedColumn]) tasks[selectedColumn] = [];
+
+      // Add the new task to the selected column
+      tasks[selectedColumn].push(taskDescription);
+
+      // Send the updated tasks back to the Flask backend
+      await fetch('http://127.0.0.1:5000/api/tasks', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(tasks),
+      });
+
+      // Navigate back to the Kanban board after submitting
+    
+    } catch (error) {
+      console.error('Error updating tasks:', error);
+    }
     navigate('/');
   };
 
